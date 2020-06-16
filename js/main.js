@@ -60,7 +60,19 @@ var createPictureElements = function () {
   return fragment;
 };
 
-
 var picElement = document.querySelector('.pictures');
 
 picElement.appendChild(createPictureElements());
+
+var bigPicture = document.querySelector('.big-picture');
+var bigPictureImg = document.querySelector('.big-picture__img');
+var bigPictureSocial = document.querySelector('.big-picture__social');
+
+bigPicture.classList.remove('hidden');
+bigPictureImg.querySelector('img').src = descriptionArray[0].url;
+bigPictureSocial.querySelector('.likes-count').textContent = descriptionArray[0].likes;
+bigPictureSocial.querySelector('.comments-count').textContent = commentsArray.length;
+
+var socialComments = document.querySelector('.social__comments');
+var nanana = socialComments.querySelectorAll('li');
+console.log(nanana);
