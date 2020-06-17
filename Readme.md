@@ -1,7 +1,7 @@
 # Личный проект «Кекстаграм» [![Build status][travis-image]][travis-url]
 
 * Студент: [Yaroslav Oliinyk](https://up.htmlacademy.ru/javascript/20/user/190489).
-* Наставник: [Рафаэль Гулиев] (https://htmlacademy.ru/profile/thundercat).
+* Наставник: [Максим Деев] (https://htmlacademy.ru/profile/id685777).
 
 ---
 
