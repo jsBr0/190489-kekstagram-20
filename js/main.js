@@ -15,6 +15,7 @@ var createObjectComment = function () {
 };
 
 var commentsArray = [];
+
 var createArrayObjectsComment = function () {
   for (var i = 0; i < 3; i++) {
     commentsArray.push(createObjectComment());
@@ -34,6 +35,7 @@ var createObjectDescription = function (index) {
 };
 
 var descriptionArray = [];
+
 var createArrayObjectsDescription = function () {
   for (var i = 0; i < 25; i++) {
     descriptionArray.push(createObjectDescription(i + 1));
@@ -44,7 +46,7 @@ createArrayObjectsDescription();
 
 var picTemplate = document.querySelector('#picture').content.querySelector('a');
 
-var renderPic = function (description) {
+var renderPicture = function (description) {
   var picture = picTemplate.cloneNode(true);
   picture.querySelector('.picture__img').src = description.url;
   picture.querySelector('.picture__likes').textContent = description.likes;
@@ -55,17 +57,18 @@ var renderPic = function (description) {
 var createPictureElements = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < descriptionArray.length; i++) {
-    fragment.appendChild(renderPic(descriptionArray[i]));
+    fragment.appendChild(renderPicture(descriptionArray[i]));
   }
   return fragment;
 };
 
-var picElement = document.querySelector('.pictures');
+var pictureElement = document.querySelector('.pictures');
 
-picElement.appendChild(createPictureElements());
+pictureElement.appendChild(createPictureElements());
+
+var bigPicture = document.querySelector('.big-picture');
 
 var changePictureContent = function (description, commentsArrayLength) {
-  var bigPicture = document.querySelector('.big-picture');
   var bigPictureImg = document.querySelector('.big-picture__img');
   var bigPictureSocial = document.querySelector('.big-picture__social');
   bigPicture.classList.remove('hidden');
@@ -116,4 +119,49 @@ socialComments.appendChild(fragment);
 
 document.querySelector('.comments-loader').classList.add('hidden');
 
-document.querySelector('body').classList.add('modal-open');
+var closeBigPicture = function () {
+  bigPicture.classList.add('hidden');
+};
+
+var cancelButton = document.querySelector('#picture-cancel');
+
+cancelButton.addEventListener('click', closeBigPicture);
+
+var imgUploadStartButton = document.querySelector('#upload-file');
+var imgUploadOverlay = document.querySelector('.img-upload__overlay');
+var imgEditorClose = document.querySelector('#upload-cancel');
+
+var onPopupPressEsc = function (evt) {
+  if (evt.key === 'Escape') {
+    evt.preventDefault();
+    closeImgEditor();
+  }
+};
+
+var openImgEditor = function () {
+  imgUploadOverlay.classList.remove('hidden');
+  document.querySelector('body').classList.add('modal-open');
+  document.addEventListener('keydown', onPopupPressEsc);
+};
+
+var closeImgEditor = function () {
+  imgUploadOverlay.classList.add('hidden');
+  imgUploadStartButton.value = '';
+  document.querySelector('body').classList.remove('modal-open');
+  document.removeEventListener('keydown', onPopupPressEsc);
+};
+
+imgUploadStartButton.addEventListener('change', function () {
+  openImgEditor();
+});
+
+imgEditorClose.addEventListener('click', function () {
+  closeImgEditor();
+});
+
+var effectLevelLine = document.querySelector('.effect-level__line');
+var effectLevelPin = document.querySelector('.effect-level__pin');
+
+effectLevelPin.addEventListener('mouseup', function () {
+
+});
