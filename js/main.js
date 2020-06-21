@@ -159,9 +159,22 @@ imgEditorClose.addEventListener('click', function () {
   closeImgEditor();
 });
 
+var effectLevelInput = document.querySelector('.effect-level__value');
 var effectLevelLine = document.querySelector('.effect-level__line');
 var effectLevelPin = document.querySelector('.effect-level__pin');
 
-effectLevelPin.addEventListener('mouseup', function () {
+var getSaturationSize = function (pinPosition, lineWidth) {
+  var saturationSize = Math.round(pinPosition * 100 / lineWidth);
+  effectLevelInput.value = saturationSize;
+};
 
+effectLevelPin.addEventListener('mouseup', function () {
+  getSaturationSize(effectLevelPin.offsetLeft, effectLevelLine.offsetWidth);
 });
+
+var effectTypeList = document.querySelector('.effects__list');
+
+effectTypeList.addEventListener('change', function () {
+  effectLevelInput.value = 100;
+});
+
