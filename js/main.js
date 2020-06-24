@@ -15,6 +15,23 @@ var getRandomInteger = function (min, max) {
   return Math.floor(random);
 };
 
+var onPopupPressEsc = function (evt) {
+  var hashtagField = document.querySelector('.text__hashtags');
+  var textField = document.querySelector('.text__description');
+  if (evt.key === 'Escape' && hashtagField !== document.activeElement && textField !== document.activeElement) {
+    evt.preventDefault();
+    closeBigPicture();
+    closeImgEditor();
+  }
+};
+
+// var onThumbnailPressEnter = function (evt) {
+//   if (evt.key === 'Enter') {
+//     evt.preventDefault();
+//     openBigPicture();
+//   }
+// };
+
 var createObjectPicture = function (index) {
   var randomLikes = getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE);
   return {
@@ -56,8 +73,9 @@ createArrayPictures();
 
 var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
 
-var renderPicture = function (pic) {
+var renderPicture = function (pic, i) {
   var picture = pictureTemplate.cloneNode(true);
+  picture.querySelector('.picture__img').setAttribute('data-img', i);
   picture.querySelector('.picture__img').src = pic.url;
   picture.querySelector('.picture__likes').textContent = pic.likes;
   picture.querySelector('.picture__comments').textContent = pic.comments;
@@ -67,7 +85,7 @@ var renderPicture = function (pic) {
 var createPictureElements = function () {
   var fragment = document.createDocumentFragment();
   for (var i = 0; i < picturesArray.length; i++) {
-    fragment.appendChild(renderPicture(picturesArray[i]));
+    fragment.appendChild(renderPicture(picturesArray[i], i));
   }
   return fragment;
 };
@@ -113,57 +131,42 @@ var createCommentElement = function (comment) {
 };
 
 var createNewComment = function () {
+  var socialComments = document.querySelector('.social__comments');
   var fragment = document.createDocumentFragment();
   fragment.appendChild(createCommentElement(commentsArray[0]));
-  return fragment;
+  socialComments.appendChild(fragment);
 };
 
-// Может спрятать строки 123, 125 в createNewComment()?
-
-var socialComments = document.querySelector('.social__comments');
-
-socialComments.appendChild(createNewComment());
+createNewComment();
 
 var bigPicture = document.querySelector('.big-picture');
+var bigPictureCancelButton = document.querySelector('#picture-cancel');
 
-// Переменная на строке 131 - оставить глобальной?
-
-var thumbnails = document.querySelectorAll('.picture');
-
-var addThumbnailClickHandler = function (pic, commentsLength) {
-  for (var i = 0; i < picturesArray.length; i++) {
-    thumbnails[i].addEventListener('click', function (evt) {
-      evt.preventDefault();
-      changeBigPictureContent(pic, commentsLength);
-      bigPicture.classList.remove('hidden');
-    });
-  }
+var openBigPicture = function () {
+  bigPicture.classList.remove('hidden');
+  document.addEventListener('keydown', onPopupPressEsc);
 };
-
-// Ошибка в этом цикле. Дополнительный вопрос - переменная цикла в конце кода (ошибка).
-
-for (var i = 0; i < picturesArray.length; i++) {
-  addThumbnailClickHandler(picturesArray[i], commentsArray.length);
-}
 
 var closeBigPicture = function () {
   bigPicture.classList.add('hidden');
+  document.removeEventListener('keydown', onPopupPressEsc);
 };
 
-var cancelButton = document.querySelector('#picture-cancel');
+pictureContainer.addEventListener('click', function (evt) {
+  if (evt.target.classList.contains('picture__img')) {
+    var item = evt.target.getAttribute('data-img');
+    changeBigPictureContent(picturesArray[item], picturesArray[item].comments.length);
+    openBigPicture();
+  }
+});
 
-cancelButton.addEventListener('click', closeBigPicture);
+bigPictureCancelButton.addEventListener('click', function () {
+  closeBigPicture();
+});
 
 var imgUploadStartButton = document.querySelector('#upload-file');
 var imgUploadOverlay = document.querySelector('.img-upload__overlay');
-var imgEditorClose = document.querySelector('#upload-cancel');
-
-var onPopupPressEsc = function (evt) {
-  if (evt.key === 'Escape' && document.querySelector('.text__hashtags') !== document.activeElement) {
-    evt.preventDefault();
-    closeImgEditor();
-  }
-};
+var imgEditorCancelButton = document.querySelector('#upload-cancel');
 
 var openImgEditor = function () {
   imgUploadOverlay.classList.remove('hidden');
@@ -182,7 +185,7 @@ imgUploadStartButton.addEventListener('change', function () {
   openImgEditor();
 });
 
-imgEditorClose.addEventListener('click', function () {
+imgEditorCancelButton.addEventListener('click', function () {
   closeImgEditor();
 });
 
