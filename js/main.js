@@ -25,12 +25,13 @@ var onPopupPressEsc = function (evt) {
   }
 };
 
-// var onThumbnailPressEnter = function (evt) {
-//   if (evt.key === 'Enter') {
-//     evt.preventDefault();
-//     openBigPicture();
-//   }
-// };
+var onThumbnailPressEnter = function (evt) {
+  if (evt.key === 'Enter' && evt.target.firstElementChild.classList.contains('picture__img')) {
+    var item = evt.target.firstElementChild.getAttribute('data-img');
+    changeBigPictureContent(picturesArray[item], picturesArray[item].comments.length);
+    openBigPicture();
+  }
+};
 
 var createObjectPicture = function (index) {
   var randomLikes = getRandomInteger(LIKES_MIN_VALUE, LIKES_MAX_VALUE);
@@ -159,6 +160,9 @@ pictureContainer.addEventListener('click', function (evt) {
     openBigPicture();
   }
 });
+
+document.addEventListener('keydown', onThumbnailPressEnter);
+
 
 bigPictureCancelButton.addEventListener('click', function () {
   closeBigPicture();
