@@ -33,14 +33,47 @@
   var effectLevelInput = document.querySelector('.effect-level__value');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
+  var effectLevelDepth = document.querySelector('.effect-level__depth');
 
-  var getSaturationSize = function (pinPosition, lineWidth) {
-    var saturationSize = Math.round(pinPosition * 100 / lineWidth);
-    effectLevelInput.value = saturationSize;
-  };
+  effectLevelPin.addEventListener('mousedown', function (evt) {
+    evt.preventDefault();
 
-  effectLevelPin.addEventListener('mouseup', function () {
-    getSaturationSize(effectLevelPin.offsetLeft, effectLevelLine.offsetWidth);
+    var startCoords = {
+      x: evt.clientX,
+    };
+
+    var onMouseMove = function (moveEvt) {
+      moveEvt.preventDefault();
+
+      var shift = {
+        x: startCoords.x - moveEvt.clientX
+      };
+
+      startCoords = {
+        x: moveEvt.clientX
+      };
+
+      var currentPosition = ((effectLevelPin.offsetLeft - shift.x) * 100 / effectLevelLine.offsetWidth);
+
+      if (currentPosition < 0) {
+        currentPosition = 0;
+      } else if (currentPosition > 100) {
+        currentPosition = 100;
+      }
+
+      effectLevelPin.style.left = currentPosition + '%';
+      effectLevelDepth.style.width = currentPosition + '%';
+      effectLevelInput.value = currentPosition;
+    };
+
+    var onMouseUp = function (upEvt) {
+      upEvt.preventDefault();
+
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseup', onMouseUp);
+    };
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseup', onMouseUp);
   });
 
   var effectTypeList = document.querySelector('.effects__list');
@@ -49,11 +82,11 @@
     effectLevelInput.value = 100;
   });
 
-  var textHashtagsInput = document.querySelector('.text__hashtags');
-
   var equalsIgnoreCase = function (string1, string2) {
     return string1.toUpperCase() === string2.toUpperCase();
   };
+
+  var textHashtagsInput = document.querySelector('.text__hashtags');
 
   textHashtagsInput.addEventListener('input', function () {
     var hashtagsArray = textHashtagsInput.value.split(' ');
