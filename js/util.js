@@ -10,6 +10,7 @@ window.util = (function () {
   var HASHTAG_MAX_LENGTH = 20;
   var HASHTAG_MIN_LENGTH = 2;
   var HASHTAG_MAX_QTY = 5;
+  var EFFECT_DEFAULT_VALUE = 100;
 
   return {
     PICTURES_QTY: PICTURES_QTY,
@@ -21,6 +22,7 @@ window.util = (function () {
     HASHTAG_MAX_LENGTH: HASHTAG_MAX_LENGTH,
     HASHTAG_MIN_LENGTH: HASHTAG_MIN_LENGTH,
     HASHTAG_MAX_QTY: HASHTAG_MAX_QTY,
+    EFFECT_DEFAULT_VALUE: EFFECT_DEFAULT_VALUE,
 
     getRandomInteger: function (min, max) {
       var random = min + Math.random() * (max + 1 - min);
