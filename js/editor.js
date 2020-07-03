@@ -5,6 +5,18 @@
     window.util.isEscEvent(evt, closeImgEditor);
   };
 
+  var effectLevelValue = document.querySelector('.effect-level__value');
+  var effectLevelLine = document.querySelector('.effect-level__line');
+  var effectLevelPin = document.querySelector('.effect-level__pin');
+  var effectLevelDepth = document.querySelector('.effect-level__depth');
+  var imageUploadPreview = document.querySelector('.img-upload__preview').querySelector('img');
+
+  var setPinParameters = function (position) {
+    effectLevelPin.style.left = position + '%';
+    effectLevelDepth.style.width = position + '%';
+    effectLevelValue.setAttribute('value', position);
+  };
+
   var imgUploadStartButton = document.querySelector('#upload-file');
   var imgUploadOverlay = document.querySelector('.img-upload__overlay');
   var imgEditorCancelButton = document.querySelector('#upload-cancel');
@@ -12,7 +24,9 @@
   var openImgEditor = function () {
     imgUploadOverlay.classList.remove('hidden');
     document.querySelector('body').classList.add('modal-open');
+    document.querySelector('.effect-level__pin').classList.add('hidden');
     document.addEventListener('keydown', onPopupPressEsc);
+    setPinParameters(window.util.EFFECT_DEFAULT_VALUE);
   };
 
   var closeImgEditor = function () {
@@ -29,18 +43,6 @@
   imgEditorCancelButton.addEventListener('click', function () {
     closeImgEditor();
   });
-
-  var effectLevelValue = document.querySelector('.effect-level__value');
-  var effectLevelLine = document.querySelector('.effect-level__line');
-  var effectLevelPin = document.querySelector('.effect-level__pin');
-  var effectLevelDepth = document.querySelector('.effect-level__depth');
-  var imageUploadPreview = document.querySelector('.img-upload__preview').querySelector('img');
-
-  var setPinSettings = function (position) {
-    effectLevelPin.style.left = position + '%';
-    effectLevelDepth.style.width = position + '%';
-    effectLevelValue.setAttribute('value', position);
-  };
 
   effectLevelPin.addEventListener('mousedown', function (evt) {
     evt.preventDefault();
@@ -68,8 +70,8 @@
         currentPosition = 100;
       }
 
-      setPinSettings(currentPosition);
-      setValueEffect(shift.x);
+      setPinParameters(currentPosition);
+      calculateEffectValue(currentPosition);
     };
 
     var onMouseUp = function (upEvt) {
@@ -82,28 +84,47 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var setValueEffect = function (shift) {
+  var setBooleanPinPosition = function (position) {
+    if (position > 5 && position < 10) {
+      setPinParameters(100);
+    } else if (position < 95 && position > 90) {
+      setPinParameters(0);
+    }
 
-    imageUploadPreview.style.filter = '';
+    var effectValue;
 
+    if (position === 100) {
+      effectValue = 1;
+    } else if (position === 0) {
+      effectValue = 0;
+    }
+
+    return effectValue;
+  };
+
+  var calculateEffectValue = function (position) {
     if (imageUploadPreview.classList.contains('effects__preview--chrome')) {
-      var grayscale;
-      if (shift > 0) {
-        // setPinSettings(100);
-        grayscale = 1;
-      } else if (shift < 0) {
-        setPinSettings(0);
-        grayscale = 0;
+      imageUploadPreview.style.filter = 'grayscale(' + setBooleanPinPosition(position) + ')';
+    } else if (imageUploadPreview.classList.contains('effects__preview--sepia')) {
+      imageUploadPreview.style.filter = 'sepia(' + setBooleanPinPosition(position) + ')';
+    } else if (imageUploadPreview.classList.contains('effects__preview--marvin')) {
+      imageUploadPreview.style.filter = 'invert(' + position + '%)';
+    } else if (imageUploadPreview.classList.contains('effects__preview--phobos')) {
+      imageUploadPreview.style.filter = 'blur(' + (Math.ceil(position / (window.util.EFFECT_DEFAULT_VALUE / 4) - 1)) + 'px)';
+    } else if (imageUploadPreview.classList.contains('effects__preview--heat')) {
+      if (position === 0) {
+        imageUploadPreview.style.filter = 'brightness(1)';
+      } else {
+        imageUploadPreview.style.filter = 'brightness(' + (Math.ceil(position / Math.floor(window.util.EFFECT_DEFAULT_VALUE / 3))) + ')';
       }
-      imageUploadPreview.removeAttribute('style');
-      imageUploadPreview.style.filter = 'grayscale(' + grayscale + ')';
     }
   };
 
   var effectsList = document.querySelector('.effects__list');
 
-  var setPreviewEffect = function () {
-    setPinSettings(window.util.EFFECT_DEFAULT_VALUE);
+  var changePreviewEffect = function () {
+    setPinParameters(window.util.EFFECT_DEFAULT_VALUE);
+    imageUploadPreview.removeAttribute('style');
 
     for (var i = 0; i < effectsList.children.length; i++) {
       var effectClassName = effectsList.querySelectorAll('span')[i].classList[1];
@@ -120,7 +141,7 @@
     }
   };
 
-  effectsList.addEventListener('change', setPreviewEffect);
+  effectsList.addEventListener('change', changePreviewEffect);
 
   var equalsIgnoreCase = function (string1, string2) {
     return string1.toUpperCase() === string2.toUpperCase();
