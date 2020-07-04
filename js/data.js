@@ -42,6 +42,6 @@
 
   window.data = {
     picturesArray: picturesArray,
-    commentsArray: commentsArray,
+    commentsArray: commentsArray
   };
 })();

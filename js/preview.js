@@ -83,7 +83,6 @@
 
   document.addEventListener('keydown', onThumbnailPressEnter);
 
-
   bigPictureCancelButton.addEventListener('click', function () {
     closeBigPicture();
   });
