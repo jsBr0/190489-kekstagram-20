@@ -2,7 +2,7 @@
 
 (function () {
   var onPopupPressEsc = function (evt) {
-    window.util.isEscEvent(evt, closeImgEditor);
+    window.main.isEscEvent(evt, closeImgEditor);
   };
 
   var effectLevelValue = document.querySelector('.effect-level__value');
@@ -22,18 +22,20 @@
   var imgEditorCancelButton = document.querySelector('#upload-cancel');
 
   var openImgEditor = function () {
-    imgUploadOverlay.classList.remove('hidden');
     document.querySelector('body').classList.add('modal-open');
-    document.querySelector('.effect-level__pin').classList.add('hidden');
     document.addEventListener('keydown', onPopupPressEsc);
-    setPinParameters(window.util.EFFECT_DEFAULT_VALUE);
+    imgUploadOverlay.classList.remove('hidden');
+    imageUploadPreview.classList.add('effects__preview--none');
+    effectLevelPin.classList.add('hidden');
+    setPinParameters(window.main.EFFECT_DEFAULT_VALUE);
   };
 
   var closeImgEditor = function () {
-    imgUploadOverlay.classList.add('hidden');
-    imgUploadStartButton.value = '';
     document.querySelector('body').classList.remove('modal-open');
     document.removeEventListener('keydown', onPopupPressEsc);
+    imgUploadOverlay.classList.add('hidden');
+    imgUploadStartButton.value = '';
+    imageUploadPreview.removeAttribute('class');
   };
 
   imgUploadStartButton.addEventListener('change', function () {
@@ -110,12 +112,12 @@
     } else if (imageUploadPreview.classList.contains('effects__preview--marvin')) {
       imageUploadPreview.style.filter = 'invert(' + position + '%)';
     } else if (imageUploadPreview.classList.contains('effects__preview--phobos')) {
-      imageUploadPreview.style.filter = 'blur(' + (Math.ceil(position / (window.util.EFFECT_DEFAULT_VALUE / 4) - 1)) + 'px)';
+      imageUploadPreview.style.filter = 'blur(' + (Math.ceil(position / (window.main.EFFECT_DEFAULT_VALUE / 4) - 1)) + 'px)';
     } else if (imageUploadPreview.classList.contains('effects__preview--heat')) {
       if (position === 0) {
         imageUploadPreview.style.filter = 'brightness(1)';
       } else {
-        imageUploadPreview.style.filter = 'brightness(' + (Math.ceil(position / Math.floor(window.util.EFFECT_DEFAULT_VALUE / 3))) + ')';
+        imageUploadPreview.style.filter = 'brightness(' + (Math.ceil(position / Math.floor(window.main.EFFECT_DEFAULT_VALUE / 3))) + ')';
       }
     }
   };
@@ -123,7 +125,7 @@
   var effectsList = document.querySelector('.effects__list');
 
   var changePreviewEffect = function () {
-    setPinParameters(window.util.EFFECT_DEFAULT_VALUE);
+    setPinParameters(window.main.EFFECT_DEFAULT_VALUE);
     imageUploadPreview.removeAttribute('style');
 
     for (var i = 0; i < effectsList.children.length; i++) {
@@ -164,16 +166,16 @@
     };
 
     for (var i = 0; i < hashtagsArray.length; i++) {
-      if (re.test(hashtagsArray[i]) === true && hashtagsArray.length > window.util.HASHTAG_MAX_QTY) {
-        textHashtagsInput.setCustomValidity('Нельзя указать больше ' + window.util.HASHTAG_MAX_QTY + ' хэш-тегов.');
-      } else if (re.test(hashtagsArray[i]) === false && hashtagsArray[i].length < window.util.HASHTAG_MIN_LENGTH) {
-        textHashtagsInput.setCustomValidity('Хэш-тег начинается с символа # (решётка) и состоит минимум из ' + (window.util.HASHTAG_MIN_LENGTH - 1) + ' символа после неё.');
+      if (re.test(hashtagsArray[i]) === true && hashtagsArray.length > window.main.HASHTAG_MAX_QTY) {
+        textHashtagsInput.setCustomValidity('Нельзя указать больше ' + window.main.HASHTAG_MAX_QTY + ' хэш-тегов.');
+      } else if (re.test(hashtagsArray[i]) === false && hashtagsArray[i].length < window.main.HASHTAG_MIN_LENGTH) {
+        textHashtagsInput.setCustomValidity('Хэш-тег начинается с символа # (решётка) и состоит минимум из ' + (window.main.HASHTAG_MIN_LENGTH - 1) + ' символа после неё.');
       } else if (reMerged.test(hashtagsArray[i]) === true) {
         textHashtagsInput.setCustomValidity('Хэш-теги разделяются пробелами.');
       } else if (re.test(hashtagsArray[i]) === false) {
         textHashtagsInput.setCustomValidity('Хэш-тег начинается с символа # (решётка), строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т.п.), символы пунктуации (тире, дефис, запятая и т.п.), эмодзи и т.д.');
-      } else if (re.test(hashtagsArray[i]) === true && hashtagsArray[i].length > window.util.HASHTAG_MAX_LENGTH) {
-        textHashtagsInput.setCustomValidity('Максимальная длина одного хэш-тега ' + window.util.HASHTAG_MAX_LENGTH + ' символов, включая решётку.');
+      } else if (re.test(hashtagsArray[i]) === true && hashtagsArray[i].length > window.main.HASHTAG_MAX_LENGTH) {
+        textHashtagsInput.setCustomValidity('Максимальная длина одного хэш-тега ' + window.main.HASHTAG_MAX_LENGTH + ' символов, включая решётку.');
       } else {
         textHashtagsInput.setCustomValidity('');
       }

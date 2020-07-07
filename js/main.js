@@ -1,6 +1,6 @@
 'use strict';
 
-window.util = (function () {
+window.main = (function () {
   var PICTURES_QTY = 25;
   var LIKES_MIN_VALUE = 15;
   var LIKES_MAX_VALUE = 200;

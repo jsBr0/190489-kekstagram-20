@@ -2,6 +2,7 @@
 
 (function () {
   var pictureTemplate = document.querySelector('#picture').content.querySelector('a');
+  var pictureContainer = document.querySelector('.pictures');
 
   var renderPicture = function (pic, i) {
     var picture = pictureTemplate.cloneNode(true);
@@ -12,15 +13,13 @@
     return picture;
   };
 
-  var createPictureElements = function () {
+  var successHandler = function (pictures) {
+    window.loadData = pictures;
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < window.data.picturesArray.length; i++) {
-      fragment.appendChild(renderPicture(window.data.picturesArray[i], i));
+    for (var i = 0; i < pictures.length; i++) {
+      fragment.appendChild(renderPicture(pictures[i], i));
     }
-    return fragment;
+    pictureContainer.appendChild(fragment);
   };
-
-  var pictureContainer = document.querySelector('.pictures');
-
-  pictureContainer.appendChild(createPictureElements());
+  window.load(successHandler);
 })();
