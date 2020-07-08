@@ -2,7 +2,7 @@
 
 (function () {
   var createObjectPicture = function (index) {
-    var randomLikes = window.util.getRandomInteger(window.util.LIKES_MIN_VALUE, window.util.LIKES_MAX_VALUE);
+    var randomLikes = window.main.getRandomInteger(window.main.LIKES_MIN_VALUE, window.main.LIKES_MAX_VALUE);
     return {
       url: 'photos/' + index + '.jpg',
       description: 'Просто красивое фото',
@@ -12,7 +12,7 @@
   };
 
   var createObjectComment = function () {
-    var randomAvatar = window.util.getRandomInteger(window.util.AVATAR_FIRST_URL_VALUE, window.util.AVATAR_LAST_URL_VALUE);
+    var randomAvatar = window.main.getRandomInteger(window.main.AVATAR_FIRST_URL_VALUE, window.main.AVATAR_LAST_URL_VALUE);
     return {
       avatar: 'img/avatar-' + randomAvatar + '.svg',
       message: 'Моя бабушка случайно чихнула с фотоаппаратом в руках и у неё получилась фотография лучше.',
@@ -23,7 +23,7 @@
   var commentsArray = [];
 
   var createArrayComments = function () {
-    for (var i = 0; i < window.util.COMMENTS_MAX_QTY; i++) {
+    for (var i = 0; i < window.main.COMMENTS_MAX_QTY; i++) {
       commentsArray.push(createObjectComment());
     }
   };
@@ -33,7 +33,7 @@
   var picturesArray = [];
 
   var createArrayPictures = function () {
-    for (var i = 0; i < window.util.PICTURES_QTY; i++) {
+    for (var i = 0; i < window.main.PICTURES_QTY; i++) {
       picturesArray.push(createObjectPicture(i + 1));
     }
   };
