@@ -14,12 +14,12 @@
   };
 
   var successHandler = function (pictures) {
-    window.loadData = pictures;
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pictures.length; i++) {
       fragment.appendChild(renderPicture(pictures[i], i));
     }
     pictureContainer.appendChild(fragment);
+    window.loadData = pictures;
   };
   window.load(successHandler);
 })();
