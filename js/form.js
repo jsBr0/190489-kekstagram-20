@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var main = document.querySelector('main');
   var effectLevelValue = document.querySelector('.effect-level__value');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
@@ -16,6 +17,12 @@
 
   var onPopupPressEsc = function (evt) {
     window.main.isEscEvent(evt, closeImgEditor);
+  };
+
+  var onSubmitPopupPressEsc = function (evt, statusType) {
+    window.main.isEscEvent(evt, function () {
+      return closeSubmitPopup(statusType);
+    });
   };
 
   var setPinParameters = function (position) {
@@ -195,13 +202,21 @@
     var status = statusTemplate.cloneNode(true);
     var fragment = document.createDocumentFragment();
     fragment.appendChild(status);
-    var main = document.querySelector('main');
     main.appendChild(fragment);
   };
 
   var showSubmitPopup = function (statusType) {
     closeImgEditor();
     renderSubmitPopup(statusType);
+
+    document.addEventListener('keydown', function (evt) {
+      onSubmitPopupPressEsc(evt, statusType);
+    });
+
+    main.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      closeSubmitPopup(statusType);
+    });
 
     var popupButton = document.querySelector('.' + statusType + '__button');
     popupButton.addEventListener('click', function (evt) {
@@ -214,8 +229,14 @@
   };
 
   var closeSubmitPopup = function (statusType) {
-    var popup = document.querySelector('.' + statusType);
-    popup.remove();
+    document.removeEventListener('keydown', function (evt) {
+      onSubmitPopupPressEsc(evt, statusType);
+    });
+    var selector = '.' + statusType;
+    var popup = document.querySelector(selector);
+    if (popup !== null) {
+      popup.remove();
+    }
   };
 
   var submitHandler = function (evt) {
