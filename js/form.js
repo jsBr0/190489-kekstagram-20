@@ -190,21 +190,39 @@
     getEqualHashtags(hashtagsArray);
   });
 
-  var showSubmitStatus = function (statusType) {
+  var renderSubmitPopup = function (statusType) {
     var statusTemplate = document.querySelector('#' + statusType).content.querySelector('section');
     var status = statusTemplate.cloneNode(true);
     var fragment = document.createDocumentFragment();
     fragment.appendChild(status);
     var main = document.querySelector('main');
     main.appendChild(fragment);
+  };
+
+  var showSubmitPopup = function (statusType) {
     closeImgEditor();
+    renderSubmitPopup(statusType);
+
+    var popupButton = document.querySelector('.' + statusType + '__button');
+    popupButton.addEventListener('click', function (evt) {
+      evt.preventDefault();
+      closeSubmitPopup(statusType);
+      if (statusType === 'error') {
+        openImgEditor();
+      }
+    });
+  };
+
+  var closeSubmitPopup = function (statusType) {
+    var popup = document.querySelector('.' + statusType);
+    popup.remove();
   };
 
   var submitHandler = function (evt) {
     window.upload(new FormData(form), function () {
-      showSubmitStatus('success');
+      showSubmitPopup('success');
     }, function () {
-      showSubmitStatus('error');
+      showSubmitPopup('error');
     });
     evt.preventDefault();
   };
