@@ -30,9 +30,9 @@ window.main = (function () {
     },
 
     isEscEvent: function (evt, action) {
-      var hashtagField = document.querySelector('.text__hashtags');
-      var textField = document.querySelector('.text__description');
-      if (evt.key === 'Escape' && hashtagField !== document.activeElement && textField !== document.activeElement) {
+      var textHashtagsInput = document.querySelector('.text__hashtags');
+      var textDescriptionInput = document.querySelector('.text__description');
+      if (evt.key === 'Escape' && textHashtagsInput !== document.activeElement && textDescriptionInput !== document.activeElement) {
         evt.preventDefault();
         action();
       }

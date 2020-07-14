@@ -213,8 +213,7 @@
       onSubmitPopupPressEsc(evt, statusType);
     });
 
-    main.addEventListener('click', function (evt) {
-      evt.preventDefault();
+    main.addEventListener('click', function () {
       closeSubmitPopup(statusType);
     });
 
