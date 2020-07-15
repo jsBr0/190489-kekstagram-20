@@ -20,16 +20,3 @@
     pictureContainer.appendChild(fragment);
   };
 })();
-
-//   var successHandler = function (pictures) {
-//     var fragment = document.createDocumentFragment();
-//     for (var i = 0; i < pictures.length; i++) {
-//       fragment.appendChild(renderPicture(pictures[i], i));
-//     }
-//     var pictureContainer = document.querySelector('.pictures');
-//     pictureContainer.appendChild(fragment);
-//     window.loadData = pictures;
-//   };
-
-//   window.load(successHandler);
-// })();
