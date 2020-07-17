@@ -103,5 +103,4 @@
   bigPictureCancelButton.addEventListener('click', function () {
     closeBigPicture();
   });
-
 })();
