@@ -3,18 +3,18 @@
   var main = document.querySelector('main');
   var form = document.querySelector('#upload-select-image');
 
-  var onSubmitPopupPressEsc = function (evt, statusType) {
-    window.main.isEscEvent(evt, function () {
-      return closeSubmitPopup(statusType);
-    });
-  };
-
   var renderSubmitPopup = function (statusType) {
     var statusTemplate = document.querySelector('#' + statusType).content.querySelector('section');
     var status = statusTemplate.cloneNode(true);
     var fragment = document.createDocumentFragment();
     fragment.appendChild(status);
     main.appendChild(fragment);
+  };
+
+  var onSubmitPopupPressEsc = function (evt, statusType) {
+    window.main.isEscEvent(evt, function () {
+      return closeSubmitPopup(statusType);
+    });
   };
 
   var showSubmitPopup = function (statusType) {
@@ -59,6 +59,5 @@
     evt.preventDefault();
   };
   form.addEventListener('submit', submitHandler);
-
 })();
 

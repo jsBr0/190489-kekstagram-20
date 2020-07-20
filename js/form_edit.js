@@ -61,15 +61,15 @@
 
   var changeImgScale = function (evt) {
     evt.preventDefault();
-    var target = evt.target;
+    var targetClassList = evt.target.classList;
     var classBigger = 'scale__control--bigger';
     var classSmaller = 'scale__control--smaller';
     var scaleValueNumber = parseInt(scaleControlValue.value, 10);
-    if (target.classList.contains(classBigger)) {
+    if (targetClassList.contains(classBigger)) {
       if (scaleValueNumber < window.main.SCALE_MAX_VALUE) {
         scaleValueNumber += window.main.SCALE_STEP_VALUE;
       }
-    } else if (target.classList.contains(classSmaller)) {
+    } else if (targetClassList.contains(classSmaller)) {
       if (scaleValueNumber > window.main.SCALE_MIN_VALUE) {
         scaleValueNumber -= window.main.SCALE_STEP_VALUE;
       }

@@ -33,12 +33,6 @@ window.main = (function () {
         evt.preventDefault();
         action();
       }
-    },
-
-    isEnterEvent: function (evt, action) {
-      if (evt.key === 'Enter') {
-        action();
-      }
     }
   };
 })();

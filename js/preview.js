@@ -35,9 +35,9 @@
     var socialComments = document.querySelector('.social__comments');
     socialComments.innerHTML = '';
 
-    var fragment = document.createDocumentFragment();
-
     var count;
+
+    var fragment = document.createDocumentFragment();
 
     if (commentsArray.length < window.main.MAX_COMMENTS_COUNT) {
       count = commentsArray.length;
@@ -88,7 +88,8 @@
   };
 
   var openBigPicture = function (evt) {
-    if (!evt.target.className.startsWith('img-upload')) {
+    var targetClassName = evt.target.className;
+    if (targetClassName === 'picture' || targetClassName === 'picture__img') {
       var index;
       if (evt.target.classList.contains('picture__img')) {
         index = evt.target.getAttribute('data-img');
