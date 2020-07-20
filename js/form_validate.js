@@ -11,6 +11,7 @@
     var hashtagsArray = textHashtagsInput.value.split(' ');
     var re = /^#[a-zа-яA-ZА-Я0-9]{1,}$/;
     var reMerged = /^#[a-zа-яA-ZА-Я0-9]{1,}#[a-zа-яA-ZА-Я0-9]{1,}$/;
+
     var getEqualHashtags = function (hashtags) {
       for (var i = 0; i < hashtags.length; i++) {
         for (var j = 0; j < hashtags.length; j++) {
@@ -19,6 +20,13 @@
           }
         }
       }
+    };
+
+    var colorInvalidInput = function () {
+      if (textHashtagsInput.validity.valid === false) {
+        textHashtagsInput.style.border = '3px solid red';
+      }
+      textHashtagsInput.style.border = '';
     };
 
     for (var i = 0; i < hashtagsArray.length; i++) {
@@ -37,5 +45,6 @@
       }
     }
     getEqualHashtags(hashtagsArray);
+    colorInvalidInput();
   });
 })();
