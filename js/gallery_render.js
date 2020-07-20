@@ -7,7 +7,7 @@
     picture.querySelector('.picture__img').setAttribute('data-img', i);
     picture.querySelector('.picture__img').src = pic.url;
     picture.querySelector('.picture__likes').textContent = pic.likes;
-    picture.querySelector('.picture__comments').textContent = pic.comments;
+    picture.querySelector('.picture__comments').textContent = pic.comments.length;
     return picture;
   };
 
