@@ -1,8 +1,6 @@
 'use strict';
 
 (function () {
-  var URL_GET = 'https://javascript.pages.academy/kekstagram/data';
-
   var StatusCode = {
     OK: 200
   };
@@ -17,7 +15,7 @@
       }
     });
 
-    xhr.open('GET', URL_GET);
+    xhr.open('GET', window.main.URL_GET);
     xhr.send();
   };
 
