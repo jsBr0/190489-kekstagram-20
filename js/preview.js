@@ -45,9 +45,7 @@
     } else {
       count = window.main.MAX_COMMENTS_COUNT;
       commentsLoader.classList.remove('hidden');
-      commentsLoader.addEventListener('click', function (evt) {
-        evt.preventDefault();
-
+      commentsLoader.addEventListener('click', function () {
         var moreCommentsCount = count + window.main.MAX_COMMENTS_COUNT;
         if (moreCommentsCount < commentsArray.length) {
           for (var i = count; i < moreCommentsCount; i++) {

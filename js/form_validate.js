@@ -25,8 +25,9 @@
     var colorInvalidInput = function () {
       if (textHashtagsInput.validity.valid === false) {
         textHashtagsInput.style.border = '3px solid red';
+      } else {
+        textHashtagsInput.style.border = '';
       }
-      textHashtagsInput.style.border = '';
     };
 
     for (var i = 0; i < hashtagsArray.length; i++) {
