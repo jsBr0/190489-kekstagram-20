@@ -35,37 +35,23 @@
 
   var loadMoreComments = function (commentsArray) {
     var currentCount = window.main.MAX_COMMENTS_COUNT;
-    var moreCount = currentCount + window.main.MAX_COMMENTS_COUNT;
 
     var fragment = document.createDocumentFragment();
 
-    if (moreCount < commentsArray.length) {
-      for (var i = currentCount; i < moreCount; i++) {
-        fragment.appendChild(createCommentElement(commentsArray[i]));
-        socialComments.appendChild(fragment);
-        if (!i < moreCount) {
-          currentCount += window.main.MAX_COMMENTS_COUNT;
-          i = currentCount;
-        }
-      }
-    } else {
-      for (var j = currentCount; j < commentsArray.length; j++) {
-        fragment.appendChild(createCommentElement(commentsArray[j]));
-        socialComments.appendChild(fragment);
-      }
-      commentsLoader.classList.add('hidden');
+    for (var i = currentCount; i < commentsArray.length; i++) {
+      fragment.appendChild(createCommentElement(commentsArray[i]));
     }
+    socialComments.appendChild(fragment);
+    commentsLoader.classList.add('hidden');
   };
 
   var renderComments = function (commentsArray) {
     socialComments.innerHTML = '';
     commentsLoader.classList.add('hidden');
 
-    var commentsCount;
+    var commentsCount = commentsArray.length;
 
-    if (commentsArray.length <= window.main.MAX_COMMENTS_COUNT) {
-      commentsCount = commentsArray.length;
-    } else {
+    if (commentsArray.length > window.main.MAX_COMMENTS_COUNT) {
       commentsCount = window.main.MAX_COMMENTS_COUNT;
       commentsLoader.classList.remove('hidden');
     }
@@ -76,13 +62,18 @@
     }
     socialComments.appendChild(fragment);
 
-    if (!socialComments.classList.contains('handler')) {
-      var handle = function () {
-        loadMoreComments(commentsArray);
-      };
-      commentsLoader.addEventListener('click', handle);
-      socialComments.classList.add('handler');
-    }
+    commentsLoader.addEventListener('click', function () {
+      loadMoreComments(commentsArray);
+    });
+
+    // if (!socialComments.classList.contains('handler')) {
+    //   var handle = function () {
+    //     loadMoreComments(commentsArray);
+    //     console.log(commentsArray);
+    //   };
+    //   commentsLoader.addEventListener('click', handle);
+    //   socialComments.classList.add('handler');
+    // }
   };
 
   var changeBigPictureContent = function (pic, commentsArray) {
