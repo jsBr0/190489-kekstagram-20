@@ -1,10 +1,6 @@
 'use strict';
 
 (function () {
-  var bigPicture = document.querySelector('.big-picture');
-  var bigPictureCancelButton = document.querySelector('#picture-cancel');
-  var pictureContainer = document.querySelector('.pictures');
-
   var createSocialPic = function (comment) {
     var socialImg = document.createElement('img');
     socialImg.className = 'social__picture';
@@ -30,63 +26,89 @@
     return newComment;
   };
 
-  var createComments = function (commentsArray) {
-    var commentsLoader = document.querySelector('.comments-loader');
-    var socialComments = document.querySelector('.social__comments');
-    socialComments.innerHTML = '';
+  var socialComments = document.querySelector('.social__comments');
+  var commentsLoader = document.querySelector('.comments-loader');
+  var firstCommentsCounter = document.querySelector('.social__comment-count');
 
-    var count;
+  var moreCommentsHandler = function () {
+    var index = document.querySelector('.big-picture__img').getAttribute('data-img');
+    loadMoreComments(window.filteredData[index].comments);
+
+    var updatedCommentsList = document.querySelectorAll('.social__comment');
+    firstCommentsCounter.firstChild.textContent = updatedCommentsList.length + ' из ';
+  };
+
+  var loadMoreComments = function (commentsArray) {
+    var initialCommentsList = document.querySelectorAll('.social__comment');
+    var currentCount = initialCommentsList.length;
+    var moreCount = currentCount + window.main.MAX_COMMENTS_COUNT;
+
+    if (moreCount > commentsArray.length) {
+      moreCount = commentsArray.length;
+      commentsLoader.classList.add('hidden');
+    }
 
     var fragment = document.createDocumentFragment();
 
-    if (commentsArray.length < window.main.MAX_COMMENTS_COUNT) {
-      count = commentsArray.length;
-      commentsLoader.classList.add('hidden');
-    } else {
-      count = window.main.MAX_COMMENTS_COUNT;
-      commentsLoader.classList.remove('hidden');
-      commentsLoader.addEventListener('click', function () {
-        var moreCommentsCount = count + window.main.MAX_COMMENTS_COUNT;
-        if (moreCommentsCount < commentsArray.length) {
-          for (var i = count; i < moreCommentsCount; i++) {
-            fragment.appendChild(createCommentElement(commentsArray[i]));
-            socialComments.appendChild(fragment);
-            if (moreCommentsCount - i === 1) {
-              count += window.main.MAX_COMMENTS_COUNT;
-            }
-          }
-        } else {
-          for (var j = count; j < commentsArray.length; j++) {
-            fragment.appendChild(createCommentElement(commentsArray[j]));
-            socialComments.appendChild(fragment);
-          }
-          commentsLoader.classList.add('hidden');
-        }
-      });
-    }
-    for (var i = 0; i < count; i++) {
+    for (var i = currentCount; i < moreCount; i++) {
       fragment.appendChild(createCommentElement(commentsArray[i]));
-      socialComments.appendChild(fragment);
     }
+    socialComments.appendChild(fragment);
   };
 
-  var changeBigPictureContent = function (pic, commentsArray) {
+  var renderComments = function (commentsArray) {
+    socialComments.innerHTML = '';
+    commentsLoader.classList.add('hidden');
+
+    var commentsCount = commentsArray.length;
+
+    if (commentsArray.length > window.main.MAX_COMMENTS_COUNT) {
+      commentsCount = window.main.MAX_COMMENTS_COUNT;
+      commentsLoader.classList.remove('hidden');
+    }
+
+    var fragment = document.createDocumentFragment();
+
+    for (var i = 0; i < commentsCount; i++) {
+      fragment.appendChild(createCommentElement(commentsArray[i]));
+    }
+    socialComments.appendChild(fragment);
+
+    commentsLoader.removeEventListener('click', moreCommentsHandler);
+    commentsLoader.addEventListener('click', moreCommentsHandler);
+  };
+
+  var changeBigPictureContent = function (pic, commentsArray, index) {
     var bigPictureImg = document.querySelector('.big-picture__img');
     var bigPictureSocial = document.querySelector('.big-picture__social');
+
     bigPictureImg.querySelector('img').src = pic.url;
+    bigPictureImg.setAttribute('data-img', index);
     bigPictureSocial.querySelector('.likes-count').textContent = pic.likes;
+    firstCommentsCounter.firstChild.textContent = commentsArray.length + ' из ';
+
+    if (commentsArray.length > window.main.MAX_COMMENTS_COUNT) {
+      firstCommentsCounter.firstChild.textContent = window.main.MAX_COMMENTS_COUNT + ' из ';
+    }
+
     bigPictureSocial.querySelector('.comments-count').textContent = commentsArray.length;
     bigPictureSocial.querySelector('.social__caption').textContent = pic.description;
-    bigPictureSocial.querySelector('.social__comment-count').classList.add('hidden');
-    createComments(commentsArray);
+
+    renderComments(commentsArray);
   };
 
   var onPopupPressEsc = function (evt) {
     window.main.isEscEvent(evt, closeBigPicture);
   };
 
+  var bigPicture = document.querySelector('.big-picture');
+  var bigPictureCancelButton = document.querySelector('#picture-cancel');
+  var pictureContainer = document.querySelector('.pictures');
+
   var openBigPicture = function (evt) {
+    evt.preventDefault();
     var targetClassName = evt.target.className;
+
     if (targetClassName === 'picture' || targetClassName === 'picture__img') {
       var index;
       if (evt.target.classList.contains('picture__img')) {
@@ -94,7 +116,8 @@
       } else if (evt.target.classList.contains('picture')) {
         index = evt.target.firstElementChild.getAttribute('data-img');
       }
-      changeBigPictureContent(window.filteredData[index], window.filteredData[index].comments);
+
+      changeBigPictureContent(window.filteredData[index], window.filteredData[index].comments, index);
       bigPicture.classList.remove('hidden');
       document.addEventListener('keydown', onPopupPressEsc);
       pictureContainer.removeEventListener('click', openBigPicture);
@@ -108,6 +131,5 @@
   };
 
   pictureContainer.addEventListener('click', openBigPicture);
-
   bigPictureCancelButton.addEventListener('click', closeBigPicture);
 })();
