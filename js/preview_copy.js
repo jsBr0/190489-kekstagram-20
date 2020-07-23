@@ -43,8 +43,9 @@
       for (var i = currentCount; i < moreCount; i++) {
         fragment.appendChild(createCommentElement(commentsArray[i]));
         socialComments.appendChild(fragment);
-        if (moreCount - i === 1) {
+        if (!i < moreCount) {
           currentCount += window.main.MAX_COMMENTS_COUNT;
+          i = currentCount;
         }
       }
     } else {
@@ -56,10 +57,7 @@
     }
   };
 
-
   var renderComments = function (commentsArray) {
-    var socialCommentCount = document.querySelector('.social__comment-count');
-
     socialComments.innerHTML = '';
     commentsLoader.classList.add('hidden');
 
@@ -86,46 +84,6 @@
       socialComments.classList.add('handler');
     }
   };
-
-  // var createComments = function (commentsArray) {
-  //   var commentsLoader = document.querySelector('.comments-loader');
-  //   var socialComments = document.querySelector('.social__comments');
-  //   socialComments.innerHTML = '';
-
-  //   var count;
-
-  //   var fragment = document.createDocumentFragment();
-
-  //   if (commentsArray.length < window.main.MAX_COMMENTS_COUNT) {
-  //     count = commentsArray.length;
-  //     commentsLoader.classList.add('hidden');
-  //   } else {
-  //     count = window.main.MAX_COMMENTS_COUNT;
-  //     commentsLoader.classList.remove('hidden');
-  //     commentsLoader.addEventListener('click', function () {
-  //       var moreCommentsCount = count + window.main.MAX_COMMENTS_COUNT;
-  //       if (moreCommentsCount < commentsArray.length) {
-  //         for (var i = count; i < moreCommentsCount; i++) {
-  //           fragment.appendChild(createCommentElement(commentsArray[i]));
-  //           socialComments.appendChild(fragment);
-  //           if (moreCommentsCount - i === 1) {
-  //             count += window.main.MAX_COMMENTS_COUNT;
-  //           }
-  //         }
-  //       } else {
-  //         for (var j = count; j < commentsArray.length; j++) {
-  //           fragment.appendChild(createCommentElement(commentsArray[j]));
-  //           socialComments.appendChild(fragment);
-  //         }
-  //         commentsLoader.classList.add('hidden');
-  //       }
-  //     });
-  //   }
-  //   for (var i = 0; i < count; i++) {
-  //     fragment.appendChild(createCommentElement(commentsArray[i]));
-  //     socialComments.appendChild(fragment);
-  //   }
-  // };
 
   var changeBigPictureContent = function (pic, commentsArray) {
     var bigPictureImg = document.querySelector('.big-picture__img');
