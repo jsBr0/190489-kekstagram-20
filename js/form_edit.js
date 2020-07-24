@@ -30,24 +30,24 @@
     imgUploadPreview.className = '';
     imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--none');
-    effectLevelPin.classList.add('hidden');
+    effectLevelPin.classList.add('visually-hidden');
     textHashtagsInput.value = '';
     textDescriptionInput.value = '';
     setPinSettings(window.main.EFFECT_DEFAULT_VALUE);
   };
 
   var onPopupPressEsc = function (evt) {
-    window.main.isEscEvent(evt, window.closeImgEditor);
+    window.main.isEscEvent(evt, closeImgEditor);
   };
 
-  window.openImgEditor = function () {
+  var openImgEditor = function () {
     document.querySelector('body').classList.add('modal-open');
     imgUploadOverlay.classList.remove('hidden');
     setDefaultForm();
     document.addEventListener('keydown', onPopupPressEsc);
   };
 
-  window.closeImgEditor = function () {
+  var closeImgEditor = function () {
     document.querySelector('body').classList.remove('modal-open');
     imgUploadOverlay.classList.add('hidden');
     imgUploadStartButton.value = '';
@@ -55,9 +55,9 @@
     document.removeEventListener('keydown', onPopupPressEsc);
   };
 
-  imgUploadStartButton.addEventListener('change', window.openImgEditor);
+  imgUploadStartButton.addEventListener('change', openImgEditor);
 
-  imgEditorCancelButton.addEventListener('click', window.closeImgEditor);
+  imgEditorCancelButton.addEventListener('click', closeImgEditor);
 
   var changeImgScale = function (evt) {
     evt.preventDefault();
@@ -120,38 +120,17 @@
     document.addEventListener('mouseup', onMouseUp);
   });
 
-  var setBooleanPinPosition = function (position) {
-    if (position > 5 && position < 10) {
-      setPinSettings(100);
-    } else if (position < 95 && position > 90) {
-      setPinSettings(0);
-    }
-
-    var effectValue;
-    if (position === 100) {
-      effectValue = 1;
-    } else if (position === 0) {
-      effectValue = 0;
-    }
-
-    return effectValue;
-  };
-
   var calculateEffectValue = function (position) {
     if (imgUploadPreview.classList.contains('effects__preview--chrome')) {
-      imgUploadPreview.style.filter = 'grayscale(' + setBooleanPinPosition(position) + ')';
+      imgUploadPreview.style.filter = 'grayscale(' + position / window.main.EFFECT_DEFAULT_VALUE + ')';
     } else if (imgUploadPreview.classList.contains('effects__preview--sepia')) {
-      imgUploadPreview.style.filter = 'sepia(' + setBooleanPinPosition(position) + ')';
+      imgUploadPreview.style.filter = 'sepia(' + position / window.main.EFFECT_DEFAULT_VALUE + ')';
     } else if (imgUploadPreview.classList.contains('effects__preview--marvin')) {
       imgUploadPreview.style.filter = 'invert(' + position + '%)';
     } else if (imgUploadPreview.classList.contains('effects__preview--phobos')) {
-      imgUploadPreview.style.filter = 'blur(' + (Math.ceil(position / (window.main.EFFECT_DEFAULT_VALUE / 4) - 1)) + 'px)';
+      imgUploadPreview.style.filter = 'blur(' + position * 3 / window.main.EFFECT_DEFAULT_VALUE + 'px)';
     } else if (imgUploadPreview.classList.contains('effects__preview--heat')) {
-      if (position === 0) {
-        imgUploadPreview.style.filter = 'brightness(1)';
-      } else {
-        imgUploadPreview.style.filter = 'brightness(' + (Math.ceil(position / Math.floor(window.main.EFFECT_DEFAULT_VALUE / 3))) + ')';
-      }
+      imgUploadPreview.style.filter = 'brightness(' + (position * 2 / window.main.EFFECT_DEFAULT_VALUE + 1) + ')';
     }
   };
 
@@ -173,12 +152,16 @@
       }
 
       if (imgUploadPreview.classList.contains('effects__preview--none')) {
-        effectLevelPin.classList.add('hidden');
+        effectLevelPin.classList.add('visually-hidden');
       } else {
-        effectLevelPin.classList.remove('hidden');
+        effectLevelPin.classList.remove('visually-hidden');
       }
     }
   };
-
   effectsList.addEventListener('change', changePreviewEffect);
+
+  window.formEdit = {
+    openImgEditor: openImgEditor,
+    closeImgEditor: closeImgEditor
+  };
 })();

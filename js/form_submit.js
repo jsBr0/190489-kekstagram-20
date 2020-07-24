@@ -18,7 +18,7 @@
   };
 
   var showSubmitPopup = function (statusType) {
-    window.closeImgEditor();
+    window.formEdit.closeImgEditor();
     renderSubmitPopup(statusType);
 
     document.addEventListener('keydown', function (evt) {
@@ -34,7 +34,7 @@
       evt.preventDefault();
       closeSubmitPopup(statusType);
       if (statusType === 'error') {
-        window.openImgEditor();
+        window.formEdit.openImgEditor();
       }
     });
   };

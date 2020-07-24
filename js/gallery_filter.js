@@ -58,6 +58,5 @@
       renderFilteredPicture(window.uploadedData);
     }
   });
-
   filterSection.addEventListener('click', changeGalleryFilter);
 })();

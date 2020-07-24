@@ -106,7 +106,6 @@
   var pictureContainer = document.querySelector('.pictures');
 
   var openBigPicture = function (evt) {
-    evt.preventDefault();
     var targetClassName = evt.target.className;
 
     if (targetClassName === 'picture' || targetClassName === 'picture__img') {
