@@ -100,7 +100,7 @@
         x: moveEvt.clientX
       };
 
-      var currentPosition = ((effectLevelPin.offsetLeft - shift.x) * 100 / effectLevelLine.offsetWidth);
+      var currentPosition = Math.round((effectLevelPin.offsetLeft - shift.x) * 100 / effectLevelLine.offsetWidth);
 
       if (currentPosition < 0) {
         currentPosition = 0;
