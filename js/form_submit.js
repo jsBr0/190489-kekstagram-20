@@ -1,4 +1,5 @@
 'use strict';
+
 (function () {
   var main = document.querySelector('main');
   var form = document.querySelector('#upload-select-image');

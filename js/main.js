@@ -27,9 +27,7 @@ window.main = (function () {
     SCALE_MIN_VALUE: SCALE_MIN_VALUE,
 
     isEscEvent: function (evt, action) {
-      var textHashtagsInput = document.querySelector('.text__hashtags');
-      var textDescriptionInput = document.querySelector('.text__description');
-      if (evt.key === 'Escape' && textHashtagsInput !== document.activeElement && textDescriptionInput !== document.activeElement) {
+      if (evt.key === 'Escape') {
         evt.preventDefault();
         action();
       }

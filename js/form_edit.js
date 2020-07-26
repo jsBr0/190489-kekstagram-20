@@ -37,7 +37,9 @@
   };
 
   var onPopupPressEsc = function (evt) {
-    window.main.isEscEvent(evt, closeImgEditor);
+    if (textHashtagsInput !== document.activeElement && textDescriptionInput !== document.activeElement) {
+      window.main.isEscEvent(evt, closeImgEditor);
+    }
   };
 
   var openImgEditor = function () {
