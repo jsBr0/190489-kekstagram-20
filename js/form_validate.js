@@ -32,10 +32,10 @@
 
     for (var i = 0; i < hashtagsArray.length; i++) {
       if (!re.test(hashtagsArray[i])) {
-        if (!hashtagsArray[i].startsWith('#')) {
+        if (!hashtagsArray[i].startsWith('#') && !hashtagsArray[i] === '') {
           textHashtagsInput.setCustomValidity('Хэш-тег начинается с символа # (решётка).');
-        } else if (reNoWhitespace.test(hashtagsArray[i])) {
-          textHashtagsInput.setCustomValidity('Хэш-теги разделяются пробелами.');
+        } else if (reNoWhitespace.test(hashtagsArray[i]) || hashtagsArray[i] === '') {
+          textHashtagsInput.setCustomValidity('Хэш-теги разделяются одним пробелом.');
         } else if (hashtagsArray[i].startsWith('#') && hashtagsArray[i].length > 1) {
           textHashtagsInput.setCustomValidity('Строка после решётки должна состоять из букв и чисел и не может содержать пробелы, спецсимволы (#, @, $ и т.п.), символы пунктуации (тире, дефис, запятая и т.п.), эмодзи и т.д.');
         } else if (hashtagsArray[i].startsWith('#') && hashtagsArray[i].length === 1) {
@@ -48,7 +48,7 @@
         textHashtagsInput.setCustomValidity('Нельзя указать больше ' + window.main.HASHTAG_MAX_QTY + ' хэш-тегов.');
       } else {
         textHashtagsInput.setCustomValidity('');
-      } //Не решен вопрос с ошибкой проверяющего.
+      }
     }
     getEqualHashtags(hashtagsArray);
     colorInvalidInput();
