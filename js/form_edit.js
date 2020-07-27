@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var effectLevelFieldset = document.querySelector('.effect-level');
   var effectLevelValue = document.querySelector('.effect-level__value');
   var effectLevelLine = document.querySelector('.effect-level__line');
   var effectLevelPin = document.querySelector('.effect-level__pin');
@@ -30,7 +31,7 @@
     imgUploadPreview.className = '';
     imgUploadPreview.style = '';
     imgUploadPreview.classList.add('effects__preview--none');
-    effectLevelPin.classList.add('visually-hidden');
+    effectLevelFieldset.classList.add('visually-hidden');
     textHashtagsInput.value = '';
     textDescriptionInput.value = '';
     setPinSettings(window.main.EFFECT_DEFAULT_VALUE);
@@ -154,9 +155,9 @@
       }
 
       if (imgUploadPreview.classList.contains('effects__preview--none')) {
-        effectLevelPin.classList.add('visually-hidden');
+        effectLevelFieldset.classList.add('visually-hidden');
       } else {
-        effectLevelPin.classList.remove('visually-hidden');
+        effectLevelFieldset.classList.remove('visually-hidden');
       }
     }
   };
